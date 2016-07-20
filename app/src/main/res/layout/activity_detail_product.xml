@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.nana.myshoppingmall.myshoppingmall.DetailProductActivity">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="270dp"
+                android:adjustViewBounds="true"
+                android:id="@+id/img_detil"
+                android:layout_marginBottom="16dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_name"
+                android:padding="16dp"
+                android:textStyle="bold"
+                android:textSize="22sp"
+                android:gravity="center"
+                android:text="Product Name"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_price"
+                android:padding="16dp"
+                android:textStyle="bold"
+                android:textSize="22sp"
+                android:gravity="center"
+                android:text="Product Price" />
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dropdown"
+                android:id="@+id/spn_ukuran"
+                android:padding="16dp"
+                ></Spinner>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_desc"
+                android:padding="16dp"
+                android:layout_margin="16dp"
+                android:gravity="center"
+                android:text="Description" />
+        </LinearLayout>
+    </ScrollView>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_addcart"
+        android:text="Add to Cart"/>
+</LinearLayout>
