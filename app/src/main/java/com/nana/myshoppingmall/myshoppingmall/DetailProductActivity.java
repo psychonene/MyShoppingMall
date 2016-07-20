@@ -1,5 +1,6 @@
 package com.nana.myshoppingmall.myshoppingmall;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -12,6 +13,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
+
 public class DetailProductActivity extends AppCompatActivity implements View.OnClickListener {
 
     private TextView tvName, tvPrice;
@@ -20,6 +23,8 @@ public class DetailProductActivity extends AppCompatActivity implements View.OnC
     private Spinner spnUkuran;
     private TextView tvDesc;
     private ImageView imgThumbA, imgThumbB,imgThumbC,imgThumbD;
+
+    private int currentImagePos = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +47,7 @@ public class DetailProductActivity extends AppCompatActivity implements View.OnC
         imgThumbB.setOnClickListener(this);
         imgThumbC.setOnClickListener(this);
         imgThumbD.setOnClickListener(this);
+        imgDetail.setOnClickListener(this);
 
         getSupportActionBar().setTitle("Product Detail");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -59,10 +65,10 @@ public class DetailProductActivity extends AppCompatActivity implements View.OnC
 
         tvDesc.setText(desc);
 
-        Glide.with(DetailProductActivity.this).load(SampleData.charas[0][1]).into(imgThumbA); imgThumbA.setTag(SampleData.charas[0][1]);
-        Glide.with(DetailProductActivity.this).load(SampleData.charas[1][1]).into(imgThumbB);imgThumbB.setTag(SampleData.charas[1][1]);
-        Glide.with(DetailProductActivity.this).load(SampleData.charas[2][1]).into(imgThumbC);imgThumbC.setTag(SampleData.charas[2][1]);
-        Glide.with(DetailProductActivity.this).load(SampleData.charas[3][1]).into(imgThumbD);imgThumbD.setTag(SampleData.charas[3][1]);
+        Glide.with(DetailProductActivity.this).load(SampleData.charas[0][1]).into(imgThumbA); imgThumbA.setTag(new ImageThumb(SampleData.charas[0][1], 0)); //imgThumbA.setTag(0, "thumbnail"); imgThumbA.setTag(1, SampleData.charas[0][1]); imgThumbA.setTag(2, 0);
+        Glide.with(DetailProductActivity.this).load(SampleData.charas[1][1]).into(imgThumbB); imgThumbB.setTag(new ImageThumb(SampleData.charas[1][1], 1));//imgThumbA.setTag(0, "thumbnail"); imgThumbB.setTag(1, SampleData.charas[1][1]); imgThumbB.setTag(2, 1);
+        Glide.with(DetailProductActivity.this).load(SampleData.charas[2][1]).into(imgThumbC); imgThumbC.setTag(new ImageThumb(SampleData.charas[2][1], 2));//imgThumbA.setTag(0, "thumbnail"); imgThumbC.setTag(1, SampleData.charas[2][1]); imgThumbC.setTag(2, 2);
+        Glide.with(DetailProductActivity.this).load(SampleData.charas[3][1]).into(imgThumbD); imgThumbD.setTag(new ImageThumb(SampleData.charas[3][1], 3));//imgThumbA.setTag(0, "thumbnail"); imgThumbD.setTag(1, SampleData.charas[3][1]); imgThumbD.setTag(2, 3);
         //imgThumbA = setImageThumbnail(imgThumbA, SampleData.charas[0][1]);
         //imgThumbB = setImageThumbnail(imgThumbB, SampleData.charas[1][1]);
         //imgThumbC = setImageThumbnail(imgThumbC, SampleData.charas[2][1]);
@@ -86,7 +92,24 @@ public class DetailProductActivity extends AppCompatActivity implements View.OnC
     @Override
     public void onClick(View v) {
         String imgUri = "";
-        if(v.getTag(0).toString() == "thumbnail") imgUri = (String) ((ImageView) v).getTag(1);
+
+        if (v.getId() == R.id.img_detil)
+        {
+            ArrayList<String> list = new ArrayList<>();
+            for(int i=0; i<SampleData.charas.length; i++)
+                list.add(SampleData.charas[i][1]);
+
+            Intent intent = new Intent(DetailProductActivity.this, DetailImageActivity.class);
+            intent.putExtra("url_images", list);
+            intent.putExtra("position", currentImagePos);
+            startActivity(intent);
+        }
+        else
+        {
+            ImageThumb iThumb = (ImageThumb) ((ImageView) v).getTag();
+            imgUri = iThumb.getUri();
+            currentImagePos = iThumb.getPos();//(int) v.getTag(2);
+        }
         //switch (v.getId())
         //{
         //    case R.id.img_thumba:
@@ -99,5 +122,23 @@ public class DetailProductActivity extends AppCompatActivity implements View.OnC
 
         if(!imgUri.isEmpty())
             Glide.with(DetailProductActivity.this).load(imgUri).into(imgDetail);
+    }
+
+    class ImageThumb{
+        private String uri;
+        private int pos;
+
+        public String getUri() {
+            return uri;
+        }
+
+        public int getPos() {
+            return pos;
+        }
+
+        public ImageThumb(String uri, int pos) {
+            this.uri = uri;
+            this.pos = pos;
+        }
     }
 }
