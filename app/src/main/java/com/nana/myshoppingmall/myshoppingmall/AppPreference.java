@@ -13,7 +13,16 @@ public class AppPreference {
     private SharedPreferences.Editor editor;
     private String PREF_NAME = "MyShoppingAppPrefs";
     private String KEY_USERNAME = "USERNAME";
+    private String KEY_USERID = "USERID";
 
+    public String getUserID() {
+        return sharedPref.getString(KEY_USERID,"");
+    }
+
+    public void setUserID(String userID) {
+        editor.putString(KEY_USERID, userID);
+        editor.commit();
+    }
 
     public String getUsername() {
         return sharedPref.getString(KEY_USERNAME,"");
