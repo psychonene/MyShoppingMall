@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="16dp">
+
+    <ImageView
+        android:layout_width="26dp"
+        android:layout_height="26dp"
+        android:id="@+id/img_delete"
+        android:layout_marginRight="16dp"
+        android:layout_gravity="center"
+        android:background="@drawable/ic_delete"/>
+
+    <ImageView
+        android:layout_width="26dp"
+        android:layout_height="26dp"
+        android:id="@+id/img_product"
+        android:scaleType="centerCrop"
+        android:background="@color/colorAccent"
+        android:layout_marginRight="16dp"
+        android:layout_gravity="center"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Product Name"
+            android:id="@+id/tv_prodname"
+            android:layout_marginBottom="2dp"
+            android:textStyle="bold"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Product Price"
+            android:id="@+id/tv_prodprice"
+            android:layout_marginBottom="2dp"/>
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:spinnerMode="dropdown"
+            android:id="@+id/spn_qty"
+            android:layout_marginBottom="3dp"></Spinner>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sub Total"
+            android:id="@+id/tv_prodsubtotal"
+            android:layout_marginBottom="2dp"
+            android:textStyle="bold"/>
+    </LinearLayout>
+
+</LinearLayout>

@@ -17,17 +17,21 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nana.myshoppingmall.myshoppingmall.api.request.GetAllProductsRequest;
+import com.nana.myshoppingmall.myshoppingmall.db.CartHelper;
+import com.nana.myshoppingmall.myshoppingmall.db.CartItem;
 
 import java.util.ArrayList;
 
 
 public class HomeActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, AdapterView.OnItemClickListener, GetAllProductsRequest.OnGetAllProductRequestListener {
+        implements NavigationView.OnNavigationItemSelectedListener, AdapterView.OnItemClickListener, GetAllProductsRequest.OnGetAllProductRequestListener, View.OnClickListener {
     private ListView lvItem;
     private ProgressBar progressBar;
     private ProductAdapter adapter;
@@ -35,16 +39,34 @@ public class HomeActivity extends AppCompatActivity
 
     private ArrayList<Product> listItem;
 
+    private TextView tvTitle, tvCart;
+    private ImageView imgCart;
+
+    private CartHelper cartHelper;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateCartQty();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.tb_cart);
         setSupportActionBar(toolbar);
+        //getSupportActionBar().setDisplayShowTitleEnabled(true);
+        //getSupportActionBar().setTitle("Home");
+
 
 
         lvItem = (ListView)findViewById(R.id.lv_item);
         progressBar = (ProgressBar)findViewById(R.id.pb_progress);
+        tvTitle = (TextView) findViewById(R.id.tv_title);
+        tvCart = (TextView) findViewById(R.id.tv_cart);
+        imgCart = (ImageView) findViewById(R.id.img_cart);
+
         adapter = new ProductAdapter(HomeActivity.this);
         listItem = new ArrayList<>();
         adapter.setListItem(listItem);
@@ -68,6 +90,21 @@ public class HomeActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        cartHelper = new CartHelper(HomeActivity.this);
+        imgCart.setOnClickListener(this);
+    }
+
+    private void updateCartQty(){
+        ArrayList<CartItem> list = cartHelper.getAll();
+        tvCart.setVisibility(View.GONE);
+        if(list != null)
+            if(list.size()>0)
+            {
+                int qty = list.size();
+                tvCart.setVisibility(View.VISIBLE);
+                tvCart.setText(String.valueOf(qty));
+            }
     }
 
     @Override
@@ -80,12 +117,7 @@ public class HomeActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.home, menu);
-        return true;
-    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -173,5 +205,14 @@ public class HomeActivity extends AppCompatActivity
     public void onGetAllProductFailure(String errorMessage) {
         progressBar.setVisibility(View.GONE);
         Toast.makeText(HomeActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onClick(View v) {
+        if(v.getId() == R.id.img_cart)
+        {
+            Intent intent = new Intent(HomeActivity.this, CartActivity.class);
+            startActivity(intent);
+        }
     }
 }
